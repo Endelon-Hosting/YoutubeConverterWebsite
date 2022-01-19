@@ -1,0 +1,12 @@
+﻿@page "/{*route}"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code{
+	[Parameter]
+	public string Route { get; set; }
+}
