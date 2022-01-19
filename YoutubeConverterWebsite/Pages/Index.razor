@@ -1,12 +1,22 @@
 ﻿@page "/{*route}"
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
+@if (startMode)
+{
+	<input type="text" @bind="dl" />
+	<button @onclick="Download">Download</button>
+}
+else
+{
+	
+}
 @code{
+	private string dl;
+	private bool startMode = true;
 	[Parameter]
 	public string Route { get; set; }
+	async void Download()
+	{
+		var dt = await YoutubeConverterWebsite.Backend.ConverterHelper.GetUrl(dl);
+		StateHasChanged();
+	}
 }

@@ -4,11 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using YoutubeExplode;
-using YoutubeExplode.Search;
-using YoutubeExplode.Videos;
 
 namespace YoutubeConverterWebsite.Backend
-{
+{ 
     public class ConverterHelper
     {
         public static async Task<ConverterHelper> GetUrl(string youtubeUrl)
