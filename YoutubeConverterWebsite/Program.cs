@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YoutubeConverterWebsite.Backend;
 
 namespace YoutubeConverterWebsite
 {
@@ -13,6 +14,8 @@ namespace YoutubeConverterWebsite
     {
         public static void Main(string[] args)
         {
+            
+            var x = ConverterHelper.GetUrl("https://www.youtube.com/watch?v=UtF6Jej8yb4").Result;
             CreateHostBuilder(args).Build().Run();
         }
 
