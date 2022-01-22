@@ -56,14 +56,17 @@ namespace YoutubeConverterWebsite.Backend
 
                 streamManifest.GetAudioStreams().ToList().ForEach(stream =>
                 {
-                    AudioResult audio = new()
+                    if (stream.AudioCodec == "opus")
                     {
-                        quality = stream.Bitrate.BitsPerSecond.ToString(),
-                        size = stream.Size.MegaBytes.ToString(),
-                        url = stream.Url,
-                        type = stream.AudioCodec
-                    };
-                    x.audios.Add(audio);
+                        AudioResult audio = new()
+                        {
+                            quality = stream.Bitrate.BitsPerSecond.ToString(),
+                            size = stream.Size.MegaBytes.ToString(),
+                            url = stream.Url,
+                            type = stream.AudioCodec
+                        };
+                        x.audios.Add(audio);
+                    }
                 });
 
                 return x;
