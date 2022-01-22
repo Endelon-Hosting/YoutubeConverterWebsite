@@ -1,0 +1,17 @@
+.download-video-button{
+    border: 1px solid dodgerblue;
+    border-radius: 20px;
+    background-color: transparent;
+    color: dodgerblue;
+    transition: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 5px;
+    font-size: medium;
+}
+
+.download-video-button:hover{
+    border: 1px solid royalblue;
+    color: royalblue;
+    transition: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}

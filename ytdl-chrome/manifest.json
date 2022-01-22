@@ -1,0 +1,39 @@
+{
+    "name": "YouTube Downloader",
+    "description": "Download YouTube Videos!",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "main/app.js"
+    },
+    "permissions": [
+        "storage", 
+        "activeTab", 
+        "scripting",
+        "tabs"
+    ],
+    "content_scripts": [
+        {
+          "matches": ["https://*.youtube.com/*"],
+          "js": ["in-yt/in-yt.js"],
+          "css": ["in-yt/in-yt-style.css"]
+        }
+    ],
+    "externally_connectable": {
+        "matches": ["https://*.youtube.com/*"]
+    },
+    "action": {
+        "default_icon": {
+            "16": "/icon/16.png",
+            "32": "/icon/32.png",
+            "48": "/icon/48.png",
+            "128": "/icon/128.png"
+        }
+    },
+    "icons": {
+        "16": "/icon/16.png",
+        "32": "/icon/32.png",
+        "48": "/icon/48.png",
+        "128": "/icon/128.png"
+    }
+}

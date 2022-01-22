@@ -3,6 +3,7 @@
 @using YoutubeConverterWebsite.Backend
 
 @inject NavigationManager nm
+@inject IJSRuntime js
 
 <div id="layoutDefault">
     <div id="layoutDefault_content">
@@ -58,7 +59,7 @@
                                                                     <td>@v.quality</td>
                                                                     <td>@(Math.Round(float.Parse(v.size))) MB</td>
                                                                     <td>
-                                                                        <button class="btn btn-primary" @onclick="() => nm.NavigateTo(v.url, true)">Herunterladen</button>
+                                                                        <a class="btn btn-success" href="@v.url" target="_blank">Link erhalten</a>
                                                                     </td>
                                                                 </tr>
                                                             }
@@ -69,7 +70,7 @@
                                                                     <td>@v.quality</td>
                                                                     <td>@(Math.Round(float.Parse(v.size))) MB</td>
                                                                     <td>
-                                                                        <button class="btn btn-primary" @onclick="() => nm.NavigateTo(v.url, true)">Herunterladen</button>
+                                                                        <a class="btn btn-success" href="@v.url" target="_blank">Link erhalten</a>
                                                                     </td>
                                                                 </tr>
                                                             }
@@ -109,11 +110,34 @@
     public string Route { get; set; }
     public ConverterHelper Converter { get; set; } = null;
     public bool working = false;
+    public bool fromExtension = false;
     async void Download()
     {
         working = true;
         StateHasChanged();
         Converter = await ConverterHelper.GetUrl(dl);
         StateHasChanged();
+    }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Console.WriteLine(Route);
+            if (!string.IsNullOrWhiteSpace(Route))
+            {
+                if (Route.StartsWith("x/"))
+                {
+                    fromExtension = true;
+                    dl = "https://www.youtube.com/watch?v=" + Route.Remove(0, 2);
+                    Download();
+                }
+            }
+        }
+        return base.OnAfterRenderAsync(firstRender);
     }
 }
