@@ -1,22 +1,119 @@
 ﻿@page "/{*route}"
 
-@if (startMode)
-{
-	<input type="text" @bind="dl" />
-	<button @onclick="Download">Download</button>
-}
-else
-{
-	
-}
-@code{
-	private string dl;
-	private bool startMode = true;
-	[Parameter]
-	public string Route { get; set; }
-	async void Download()
-	{
-		var dt = await YoutubeConverterWebsite.Backend.ConverterHelper.GetUrl(dl);
-		StateHasChanged();
-	}
+@using YoutubeConverterWebsite.Backend
+
+@inject NavigationManager nm
+
+<div id="layoutDefault">
+    <div id="layoutDefault_content">
+        <main>
+            <!-- Navbar-->
+            <nav class="navbar navbar-marketing navbar-expand-lg bg-white navbar-light">
+                <div class="container px-5">
+                    <a class="navbar-brand text-dark" href="index.html">YT Converter</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+                </div>
+            </nav>
+            <!-- Page Header-->
+            <header class="page-header-ui page-header-ui-dark bg-img-cover overlay overlay-primary overlay-90" style="background-image: url('https://source.unsplash.com/g39p1kDjvSY/1600x1200')">
+                <div class="page-header-ui-content py-5 position-relative">
+                    <div class="container px-5">
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-xl-8 col-lg-10 text-center">
+                                <h1 class="page-header-ui-title">Youtube Converter</h1>
+                                <p class="page-header-ui-text mb-5">It's time to find the home of your dreams, and you search begins here. We make it easy to find the property that fits your needs and budget.</p>
+                            </div>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-xl-6 col-lg-8 text-center">
+                                <div class="row row-cols-1 row-cols-md-auto g-3 align-items-center">
+                                    <div class="col flex-grow-1">
+                                        @if (Converter == null)
+                                        {
+                                            <label class="sr-only" for="inputUrl">Gib eine Youtube URL ein</label>
+                                            <input class="form-control form-control-solid" id="inputUrl" type="text" @bind="dl" />
+                                        }
+                                        else
+                                        {
+                                            <div class="card img-fluid">
+                                                <img class="card-img-top" src="@Converter.thumbnailUrl">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">@Converter.title</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table ">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Typ</th>
+                                                                <th scope="col">Qualität</th>
+                                                                <th scope="col">Size</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var v in Converter.videos)
+                                                            {
+                                                                <tr>
+                                                                    <th>Video</th>
+                                                                    <td>@v.quality</td>
+                                                                    <td>@(Math.Round(float.Parse(v.size))) MB</td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary" @onclick="() => nm.NavigateTo(v.url, true)">Herunterladen</button>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            @foreach (var v in Converter.audios)
+                                                            {
+                                                                <tr>
+                                                                    <th>Audio</th>
+                                                                    <td>@v.quality</td>
+                                                                    <td>@(Math.Round(float.Parse(v.size))) MB</td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary" @onclick="() => nm.NavigateTo(v.url, true)">Herunterladen</button>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+
+                                                    </table>
+                                                    <div class="col"><button class="btn fw-500 btn-teal" @onclick="() => nm.NavigateTo('/'.ToString(), true)">Weitere Videos konvertieren</button></div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    @if (Converter == null)
+                                    {
+                                        <div class="col"><button class="btn fw-500 @(working ? "btn-dark" : "btn-teal")" @onclick="Download">Search</button></div>
+                                    }
+                                    else
+                                    {
+                                        
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="svg-border-rounded text-white">
+                    <!-- Rounded SVG Border-->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+                </div>
+            </header>
+        </main>
+    </div>
+</div>
+
+@code {
+    private string dl;
+    [Parameter]
+    public string Route { get; set; }
+    public ConverterHelper Converter { get; set; } = null;
+    public bool working = false;
+    async void Download()
+    {
+        working = true;
+        StateHasChanged();
+        Converter = await ConverterHelper.GetUrl(dl);
+        StateHasChanged();
+    }
 }
