@@ -20,5 +20,5 @@ window.onload = () => {
         catch(ex){
             console.error(ex);
         }
-    },1000 * 1);
+    },1000 * 2);
 };
