@@ -9,11 +9,10 @@ window.onload = () => {
             var h = document.getElementById("endelon-ytdl-dl-button");
             h.onclick = () => {
                 var id = new URLSearchParams(new URL(location.href).search).get("v");
-                var editorExtensionId = "objgmpooafkjklocliihnhkamacclodi";
+                var editorExtensionId = chrome.runtime.id;
 
                 chrome.runtime.sendMessage(editorExtensionId, {ytdl: id},
                     function(response) {
-                        
                     }
                 );
             };

@@ -1,6 +1,6 @@
-window.resizeTo(600,300);
+window.resizeTo(900,600);
 
-var url = "https://www.dalkyt.de/message/";
+var url = "https://ytdl.dalkyt.de/x/";
 var id = new URLSearchParams(new URL(location.href).search).get("id");
 url += id;
 
